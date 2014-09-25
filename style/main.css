@@ -1,0 +1,12 @@
+﻿body {
+    margin: 0px;
+    background-color: white;
+}
+
+canvas {
+    position:absolute;
+}
+
+#bmain {
+	   background-image: linear-gradient( #054372 0%, #F0F0FF 80%);
+}
