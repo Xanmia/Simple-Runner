@@ -45,7 +45,7 @@ $.player.prototype.update = function(){
     }
   
 	$.effects.push(new $.particles(this.x, (this.y+this.height-2),0,this.y+1, {r:0,g:0,b:0}));
-	this.y -= this.velocityY;
+	this.y -= this.velocityY*$.dt;
 	
 
 }

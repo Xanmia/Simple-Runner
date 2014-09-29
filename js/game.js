@@ -34,7 +34,8 @@ $.setup = function() {
 	$.keys = {
 		space: 0
 	};
-
+	
+	$.updateDelta();
     $.myPlayer = new $.player();
 	$.platformManager = new $.platformGenerator();
     $.platforms = [];

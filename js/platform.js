@@ -8,7 +8,7 @@
 }
 
 $.platform.prototype.update = function(velocityX, index){
-    this.x -= velocityX;
+    this.x -= velocityX*$.dt;
     if (this.x < -this.width) {
         $.platforms.splice(index, 1);
     }
