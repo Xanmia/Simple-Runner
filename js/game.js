@@ -25,6 +25,10 @@ $.setup = function() {
     $.H = window.innerHeight;
 	$.setfps = 30;
 
+
+	window.addEventListener('touchstart',$.touchstart);
+	window.addEventListener('touchmove',$.touchMove );
+	window.addEventListener('touchend',$.touchend );
     window.addEventListener('mousedown', $.mousedown);
     window.addEventListener('mouseup', $.mouseup);
 	window.addEventListener( 'keydown', $.keydown );
@@ -66,6 +70,21 @@ $.mousedown = function (e) {
 $.mouseup = function (e) {
     e.preventDefault();
     if(e.which == 1){$.mouse.leftDown = 0;}
+};
+
+$.touchstart = function (e) {
+    e.preventDefault();
+	if(e.x < $.W/2){$.keys.space = 1;}
+	else{$.mouse.leftDown = 1;}
+};
+
+$.touchmove = function (e) {
+    e.preventDefault();
+};
+
+$.touchend = function (e) {
+    e.preventDefault();
+   // if(e.which == 1){$.mouse.leftDown = 0;}
 };
 
 $.keydown = function(e){
