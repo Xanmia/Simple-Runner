@@ -15,12 +15,12 @@ $.particles = function(X,Y, targetX, targetY,color){
 		dy = this.y - targetY;
 	var direction = Math.atan2( dx, dy );
 			
-    for(i=0;i<2;i++){
+    for(i=0;i<2*$.dt;i++){
 		this.peices.push({x: this.x, 
 						  y: this.y, 
 						  dir: (Math.random()* (direction - (direction-.4))) + (direction-.4),
 						  vel: (Math.random()*this.velocity)+1,
-						  size:  Math.random()*3,
+						  size:  Math.random()*7,
 						  opacity: (((Math.random()*10)+1)*0.5)
 					  });
     }

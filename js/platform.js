@@ -1,6 +1,6 @@
 ﻿$.platform = function (x,y,maxsize,minsize,canvas) {
-	this.canvas = canvas || $.mainctx;
-    this.width=600;
+	this.canvas = null; //canvas || $.mainctx;
+    this.width=800;
     this.height=(Math.random()*maxsize)+minsize;
     this.x=x;
     this.y=$.H-this.height;
@@ -15,10 +15,10 @@ $.platform.prototype.update = function(velocityX, index){
 }
 
 $.platform.prototype.render = function(){
-    this.canvas.fillStyle = 'rgba('+ this.color.r + ',' + this.color.g + ','+ this.color.b + ',1.0)';
-	this.canvas.shadowBlur    = 20;
-	this.canvas.shadowColor   = 'rgba(0, 0, 0, 1.0)';
-    this.canvas.fillRect(this.x, this.y, this.width, this.height);
+    $.mainctx.fillStyle = 'rgba('+ this.color.r + ',' + this.color.g + ','+ this.color.b + ',1.0)';
+	$.mainctx.shadowBlur    = 20;
+	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 1.0)';
+    $.mainctx.fillRect(this.x, this.y, this.width, this.height);
 
 }
 

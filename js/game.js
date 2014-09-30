@@ -4,7 +4,7 @@ window.requestAnimFrame = (function(){
            window.webkitRequestAnimationFrame ||
            window.mozRequestAnimationFrame ||
            function(callback){
-               setInterval(callback, 60);
+               setInterval(callback, 1000/60);
            };
 })();
 
@@ -12,15 +12,18 @@ window.requestAnimFrame = (function(){
 $.setup = function() {
     $.main = document.getElementById('main');
 	$.bmain = document.getElementById('bmain');
+	$.bg1 = document.getElementById('bg1');
     $.mainctx = $.main.getContext('2d');
 	$.bmainctx = $.bmain.getContext('2d');
     $.main.width = window.innerWidth;
     $.main.height = window.innerHeight;
     $.bmain.width = window.innerWidth;
     $.bmain.height = window.innerHeight;
-	
+    $.bg1.width = window.innerWidth;
+    $.bg1.height = window.innerHeight;
     $.W = window.innerWidth;
     $.H = window.innerHeight;
+	$.setfps = 30;
 
     window.addEventListener('mousedown', $.mousedown);
     window.addEventListener('mouseup', $.mouseup);
@@ -36,6 +39,7 @@ $.setup = function() {
 	};
 	
 	$.updateDelta();
+	
     $.myPlayer = new $.player();
 	$.platformManager = new $.platformGenerator();
     $.platforms = [];
@@ -47,9 +51,9 @@ $.setup = function() {
 
 $.updateDelta = function(){
     var now = Date.now();
-    $.dt = (now - $.lt) / (1000 / 60);
-    $.dt = ($.dt < 0) ? 0.001 : $.dt;
-    $.dt = ($.dt > 10) ? 10 : $.dt;
+    $.dt = (now - $.lt) / (1000/60);
+   // $.dt = ($.dt < 0) ? 0.001 : $.dt;
+    //$.dt = ($.dt > 10) ? 10 : $.dt;
     $.lt = now;
     $.elapsed += $.dt;
 }
@@ -73,21 +77,25 @@ $.keyup = function(e){
 };
 
 $.loop = function () {
-    requestAnimFrame($.loop);
-    $.updateDelta();
+        $.updateDelta();
+	//setTimeout(function() {
+		requestAnimFrame($.loop);
 
-    $.myPlayer.update();
-	$.platformManager.update();
-	var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
-		i = $.effects.length; while(i--){  $.effects[i].update(i); }
-    $.mainctx.clearRect(0, 0, $.W, $.H);
-    $.bmainctx.clearRect(0, 0, $.W, $.H);
-    i = $.platforms.length; while(i--){  $.platforms[i].render(); }
-	i = $.effects.length; while(i--){  $.effects[i].render(); }
-	$.myPlayer.render();
-	if(!$.myPlayer.alive()){
-		 $.setup();
-	}
+
+		$.myPlayer.update();
+		$.platformManager.update();
+		var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
+			i = $.effects.length; while(i--){  $.effects[i].update(i); }
+		$.mainctx.clearRect(0, 0, $.W, $.H);
+		//$.bmainctx.clearRect(0, 0, $.W, $.H);
+		i = $.platforms.length; while(i--){  $.platforms[i].render(); }
+		i = $.effects.length; while(i--){  $.effects[i].render(); }
+		$.myPlayer.render();
+		if(!$.myPlayer.alive()){
+			 $.setup();
+		}
+		//},1000/$.setfps);
+
 	
 }
 
