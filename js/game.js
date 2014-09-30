@@ -74,7 +74,8 @@ $.mouseup = function (e) {
 
 $.touchstart = function (e) {
     e.preventDefault();
-	if(e.x < $.W/2){$.keys.space = 1;}
+	e = e.touches ? e.touches[e.touches.length - 1] : e;
+	if(e.clientX < $.W/2){$.keys.space = 1;}
 	else{$.mouse.leftDown = 1;}
 };
 

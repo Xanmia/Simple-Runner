@@ -43,8 +43,8 @@ $.particles.prototype.update = function(i) {
 $.particles.prototype.render = function() {
 	i = this.peices.length; while(i--){
 	    $.mainctx.fillStyle = "rgba("+ this.color.r + ","+ this.color.g +"," + this.color.b + ", "+ this.peices[i].opacity * (.9-(this.lifeTick/this.life)) + ")";
-		$.mainctx.shadowBlur    = 20;
-		$.mainctx.shadowColor   = 'rgba(0, 0, 0, 1.0)';
+		//$.mainctx.shadowBlur    = 20;
+		//$.mainctx.shadowColor   = 'rgba(0, 0, 0, 1.0)';
 	    $.mainctx.fillRect(this.peices[i].x,this.peices[i].y,this.peices[i].size,this.peices[i].size);
 
 	};
