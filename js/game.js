@@ -85,6 +85,8 @@ $.touchmove = function (e) {
 
 $.touchend = function (e) {
     e.preventDefault();
+	$.keys.space = 0;
+	$.mouse.leftDown = 0;
    // if(e.which == 1){$.mouse.leftDown = 0;}
 };
 

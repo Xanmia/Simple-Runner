@@ -5,37 +5,20 @@
     this.height = 30;
     this.oWidth = this.width;
     this.oHeight = this.height;
-	this.ledge = 20;
     this.velocityY = -10;
     this.velocityX = 15;
     this.maxJumpHeight = 15;
     this.weight = 1;
     this.jumps = 0;
-    this.maxJumps = 1;
+    this.maxJumps = 2;
 	this.color=$.colors[Math.floor(Math.random()*3)];
 }
 
 $.player.prototype.update = function(){
-	var collide = this.checkCollision();
-	
-	var weight = this.weight;///$.dt;
-	
-	if(collide.hit==true && this.velocityY<=0){//on a platform
-	    this.jumps = 0;
-	    this.velocityY = 0;
-		this.y = collide.e.y - (this.height);
-		if(collide.e.color==this.color){
-			
-			this.height -= .2*$.dt;
-		}
-	}
-	else{//not on a platform, possibly jumping or falling
-		//if (this.velocityY<=0){ //falling, should drop quickly
-			this.velocityY = this.velocityY - (this.weight*$.dt);//(this.velocityY - (weight/2));//Math.max(this.velocityY - weight, -(weight*4));//-10*$.dt; 
-			//}
-	}
-	
-    if ($.mouse.leftDown  && this.jumps<this.maxJumps) {
+	this.velocityY = (this.velocityY - (this.weight*$.dt));
+	this.checkCollision();
+
+    if ($.mouse.leftDown) {
         this.jump();
     }
 	
@@ -43,10 +26,9 @@ $.player.prototype.update = function(){
     	this.changeColor();
     }
   
-	$.effects.push(new $.particles(this.x, (this.y+this.height-2),0,this.y+1, {r:Math.round(Math.random()*255),g:Math.round(Math.random()*255),b:Math.round(Math.random()*255)}));
-	this.y -= this.velocityY*$.dt;
+	$.effects.push(new $.particles(this.x-5, (this.y+this.height-3),0,this.y+1, {r:Math.round(Math.random()*255),g:Math.round(Math.random()*255),b:Math.round(Math.random()*255)}));
 	
-
+	this.y -= this.velocityY*$.dt;
 }
 
 $.player.prototype.alive = function(){
@@ -60,29 +42,37 @@ $.player.prototype.alive = function(){
 	}
 	return true;
 }
-//this.y >= $.platforms[i].y-(this.height+20) && this.y <= ($.platforms[i].y-this.height) + this.ledge){
+
 $.player.prototype.checkCollision = function(){
 	var i = $.platforms.length; while(i--){  
-		if($.utils.RectOnTopRect( this.x+this.oWidth, this.y+this.oHeight,this.oWidth,this.oHeight+((this.velocityY)*-1),$.platforms[i].x,$.platforms[i].y,$.platforms[i].width,$.platforms[i].height  )){
-			return {hit: true, e: $.platforms[i]};
+		if($.utils.RectOnTopRect( this.x+this.oWidth, (this.y+this.oHeight)+Math.max(0,((this.velocityY*$.dt)*-1)),this.oWidth,Math.max(this.oHeight,(this.velocityY*$.dt)*-1),$.platforms[i].x,$.platforms[i].y,$.platforms[i].width,$.platforms[i].height  )){
+	
+			if(this.velocityY<=0){//on a platform
+			    this.jumps = 0;
+			    this.velocityY = 0;
+				this.y = $.platforms[i].y - (this.height);
+				if($.platforms[i].color==this.color){
+					this.height -= .2*$.dt;
+				}
+			}
+			
 		}
-		//if( this.x >= $.platforms[i].x && this.x <= $.platforms[i].x + $.platforms[i].width && 
-		//	this.y >= $.platforms[i].y-(this.height+1) && this.y <= ($.platforms[i].y-this.height) + Math.max((this.velocityY*-1)+this.height,this.ledge)){
-	   	 	
-			//}
 	}
-	return {hit: false, y:0};
 }
 
 $.player.prototype.jump = function () {
-	var maxJump = this.maxJumpHeight;//*$.dt;
-    this.jumps += 1;
-	this.velocityY = maxJump;
-	$.mouse.leftDown = 0;
+	if(this.jumps<this.maxJumps){
+		var maxJump = this.maxJumpHeight;//*$.dt;
+    	this.jumps += 1;
+		this.velocityY = maxJump;
+		$.mouse.leftDown = 0;
+	}
 }
 
 $.player.prototype.changeColor = function () {
-	 this.color = $.colors[Math.floor(Math.random()*3)];
+	var currentColor = $.colors.indexOf(this.color);
+	var nextColor = currentColor + 1 > $.colors.length-1 ? 0 : currentColor+1;
+	this.color = $.colors[nextColor];
 	$.keys.space = 0;
 }
 
