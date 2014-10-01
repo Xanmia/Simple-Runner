@@ -104,7 +104,9 @@ $.keyup = function(e){
 
 $.loop = function () {
         $.updateDelta();
-	setTimeout(function() {
+		$.main.style.marginLeft = '0px';
+		$.main.style.marginTop = '0px';
+	//setTimeout(function() {
 		requestAnimFrame($.loop);
 
 
@@ -120,7 +122,7 @@ $.loop = function () {
 		if(!$.myPlayer.alive()){
 			 $.setup();
 		}
-	},1000/$.setfps);
+		//},1000/$.setfps);
 
 	
 }
