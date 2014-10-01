@@ -26,7 +26,7 @@ $.player.prototype.update = function(){
     	this.changeColor();
     }
   
-	$.effects.push(new $.particles(this.x, (this.y-3),0,this.y+1, {r:Math.round(Math.random()*255),g:Math.round(Math.random()*255),b:Math.round(Math.random()*255)}));
+	$.effects.push(new $.particles(this.x, ((Math.random()*(this.y-(this.y-this.height)))+(this.y-this.height)),0,this.y+1, {r:Math.round(Math.random()*255),g:Math.round(Math.random()*255),b:Math.round(Math.random()*255)}));
 	
 	this.y -= this.velocityY*$.dt;
 }
