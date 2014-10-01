@@ -67,8 +67,8 @@ $.player.prototype.death = function() {
 
 $.player.prototype.takeDamage = function() {
 	this.height -= .2*$.dt;
-	$.main.style.marginLeft = Math.random()*5 + 'px';
-	$.main.style.marginTop = Math.random()*5 + 'px';
+	$.main.style.marginLeft = Math.random()*(5*$.dt) + 'px';
+	$.main.style.marginTop = Math.random()*(5*$.dt) + 'px';
 }
 
 $.player.prototype.jump = function () {
