@@ -18,7 +18,7 @@
 $.player.prototype.update = function(){
 	this.velocityY = (this.velocityY - (this.weight*$.dt));
 	this.checkCollision();
-	this.distance += this.velocityX/60;
+	this.distance += (this.velocityX*$.dt)/60;
     if ($.mouse.leftDown) {
         this.jump();
     }
