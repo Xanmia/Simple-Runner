@@ -1,4 +1,11 @@
-﻿
+﻿//need death animation
+//score
+//start screen
+//directions
+//change to translate
+//sound 
+//damage animation
+
 window.requestAnimFrame = (function(){
     return window.requestAnimationFrame ||
            window.webkitRequestAnimationFrame ||
@@ -100,19 +107,22 @@ $.keyup = function(e){
 
 $.loop = function () {
         $.updateDelta();
+		$.main.style.marginLeft = '0 px';
+		$.main.style.marginTop = '0 px';
 	//setTimeout(function() {
 		requestAnimFrame($.loop);
-
-
+		
 		$.myPlayer.update();
+	
 		$.platformManager.update();
 		var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
 			i = $.effects.length; while(i--){  $.effects[i].update(i); }
 		$.mainctx.clearRect(0, 0, $.W, $.H);
 		//$.bmainctx.clearRect(0, 0, $.W, $.H);
+	
 		i = $.platforms.length; while(i--){  $.platforms[i].render(); }
 		i = $.effects.length; while(i--){  $.effects[i].render(); }
-		$.myPlayer.render();
+			$.myPlayer.render();
 		if(!$.myPlayer.alive()){
 			 $.setup();
 		}

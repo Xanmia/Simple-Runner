@@ -1,7 +1,7 @@
 ﻿$.platform = function (x,y,maxsize,minsize,canvas) {
 	this.canvas = null; //canvas || $.mainctx;
     this.width=800;
-    this.height=(Math.random()*maxsize)+minsize;
+    this.height=(Math.random()*maxsize)+minsize;//this is wrong but works...
     this.x=x;
     this.y=$.H-this.height;
 	this.color=$.colors[Math.floor(Math.random()*3)];

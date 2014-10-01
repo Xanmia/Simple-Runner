@@ -12,12 +12,13 @@
     this.jumps = 0;
     this.maxJumps = 1;
 	this.color=$.colors[Math.floor(Math.random()*3)];
+	this.distance = 0;
 }
 
 $.player.prototype.update = function(){
 	this.velocityY = (this.velocityY - (this.weight*$.dt));
 	this.checkCollision();
-
+	this.distance += this.velocityX/60;
     if ($.mouse.leftDown) {
         this.jump();
     }
@@ -52,12 +53,22 @@ $.player.prototype.checkCollision = function(){
 			    this.velocityY = 0;
 				this.y = $.platforms[i].y; //- (this.height);
 				if($.platforms[i].color==this.color){
-					this.height -= .2*$.dt;
+					this.takeDamage();
 				}
 			}
 			
 		}
 	}
+}
+
+$.player.prototype.death = function() {
+	
+}
+
+$.player.prototype.takeDamage = function() {
+	this.height -= .2*$.dt;
+	$.main.style.marginLeft = Math.random()*5 + 'px';
+	$.main.style.marginTop = Math.random()*5 + 'px';
 }
 
 $.player.prototype.jump = function () {
@@ -77,6 +88,9 @@ $.player.prototype.changeColor = function () {
 }
 
 $.player.prototype.render = function(){
+	$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
+	$.utils.text("DISTANCE " + Math.round(this.distance),$.mainctx ,this.x-(this.width+5),this.y-(this.height+30),2,1);
+	
 	$.mainctx.beginPath();
     $.mainctx.fillStyle = 'rgba('+this.color.r+','+ this.color.g +','+ this.color.b +',1.0)';
 	$.mainctx.shadowBlur    = 20;
