@@ -23,7 +23,7 @@ $.setup = function() {
     $.bg1.height = window.innerHeight;
     $.W = window.innerWidth;
     $.H = window.innerHeight;
-	$.setfps = 30;
+	$.setfps = 15;
 
 
 	window.addEventListener('touchstart',$.touchstart);
