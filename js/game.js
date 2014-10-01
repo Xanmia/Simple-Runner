@@ -62,8 +62,6 @@ $.setup = function() {
 $.updateDelta = function(){
     var now = Date.now();
     $.dt = (now - $.lt) / (1000/60);
-   // $.dt = ($.dt < 0) ? 0.001 : $.dt;
-    //$.dt = ($.dt > 10) ? 10 : $.dt;
     $.lt = now;
     $.elapsed += $.dt;
 }
@@ -106,7 +104,7 @@ $.keyup = function(e){
 
 $.loop = function () {
         $.updateDelta();
-	//setTimeout(function() {
+	setTimeout(function() {
 		requestAnimFrame($.loop);
 
 
@@ -122,7 +120,7 @@ $.loop = function () {
 		if(!$.myPlayer.alive()){
 			 $.setup();
 		}
-		//},1000/$.setfps);
+	},1000/$.setfps);
 
 	
 }
