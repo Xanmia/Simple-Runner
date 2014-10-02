@@ -70,7 +70,7 @@ $.titleScreen = function(){
 	$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
 	$.utils.text("COLOR RUNNER",$.mainctx ,$.W/2-400,$.H/6,12,7);
-	$.utils.text($.mobile ? "TAP TO PLAY" : "SPACE TO PLAY",$.mainctx ,$.W/2-250,$.H/2,6,7);
+	$.utils.text($.mobile ? "TAP  TO  PLAY" : "SPACE TO PLAY",$.mainctx ,$.W/2-250,$.H/2,6,7);
 }
 
 $.deathScreen = function(){
@@ -78,7 +78,8 @@ $.deathScreen = function(){
 	$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
 	$.utils.text("GAME OVER",$.mainctx ,$.W/2-300,$.H/6,12,7);
-	$.utils.text($.mobile ? "TAP TO PLAY" :"SPACE TO PLAY",$.mainctx ,$.W/2-250,$.H/2,6,7);
+	$.utils.text("SCORE " + Math.round($.myPlayer.distance),$.mainctx ,$.W/2-170,$.H/3,6,7);
+	$.utils.text($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",$.mainctx ,$.W/2-250,$.H/2,6,7);
 }
 
 $.newGame = function(){
