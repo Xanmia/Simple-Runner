@@ -1,6 +1,6 @@
 ﻿
 //need death animation
-//score
+//score and gameover at death
 //start screen
 //directions
 //change to translate
@@ -31,6 +31,12 @@ $.setup = function() {
     $.H = window.innerHeight;
 	$.setfps = 30;
 
+	var ua = navigator.userAgent.toLowerCase();
+	var ios = ua.indexOf('ipod') >= 0 || ua.indexOf('ipad') >= 0 || ua.indexOf('iphone') >= 0;
+	var android = ua.indexOf('android') >= 0;
+	var ffos = ua.indexOf('firefox') >= 0 && ua.indexOf('mobile') >= 0;
+	$.mobile = ios || android || ffos;
+
 
 	window.addEventListener('touchstart',$.touchstart);
 	window.addEventListener('touchmove',$.touchMove );
@@ -39,7 +45,7 @@ $.setup = function() {
     window.addEventListener('mouseup', $.mouseup);
 	window.addEventListener( 'keydown', $.keydown );
 	window.addEventListener( 'keyup', $.keyup );
-
+	
     $.mouse = {
         leftDown: 0
     };
@@ -56,7 +62,26 @@ $.setup = function() {
  	$.effects = [];
 	
 	$.platforms.push( new $.platform(1, $.H-40, 125,100) );
-   
+  // $.sounds.play();
+}
+
+$.titleScreen = function(){
+	$.mainctx.shadowBlur    = 20;
+	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
+	$.utils.text("COLOR RUNNER",$.mainctx ,$.W/2-400,$.H/6,12,7);
+	$.utils.text($.mobile ? "TAP TO PLAY" : "SPACE TO PLAY",$.mainctx ,$.W/2-250,$.H/2,6,7);
+}
+
+$.deathScreen = function(){
+	$.mainctx.shadowBlur    = 20;
+	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
+	$.utils.text("GAME OVER",$.mainctx ,$.W/2-300,$.H/6,12,7);
+	$.utils.text($.mobile ? "TAP TO PLAY" :"SPACE TO PLAY",$.mainctx ,$.W/2-250,$.H/2,6,7);
+}
+
+$.newGame = function(){
+	$.gameStatus = 'playing';
+    $.setup();
 }
 
 $.updateDelta = function(){
@@ -103,31 +128,61 @@ $.keyup = function(e){
 };
 
 $.loop = function () {
-        $.updateDelta();
-		$.main.style.marginLeft = '0px';
-		$.main.style.marginTop = '0px';
-	//setTimeout(function() {
 		requestAnimFrame($.loop);
-
-
-		$.myPlayer.update();
-		$.platformManager.update();
-		var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
-			i = $.effects.length; while(i--){  $.effects[i].update(i); }
-		$.mainctx.clearRect(0, 0, $.W, $.H);
-		//$.bmainctx.clearRect(0, 0, $.W, $.H);
-		i = $.platforms.length; while(i--){  $.platforms[i].render(); }
-		i = $.effects.length; while(i--){  $.effects[i].render(); }
-		$.myPlayer.render();
-		if(!$.myPlayer.alive()){
-			 $.setup();
+        $.updateDelta();
+		
+		if ($.gameStatus == 'title'){
+			if($.mouse.leftDown || $.keys.space){$.newGame();};
+			$.main.style.marginLeft = '0px';
+			$.main.style.marginTop = '0px';
+		//setTimeout(function() {
+			$.myPlayer.update();
+			$.platformManager.update();
+			var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
+				i = $.effects.length; while(i--){  $.effects[i].update(i); }
+			$.mainctx.clearRect(0, 0, $.W, $.H);
+			//$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
+			$.titleScreen();
+			//$.bmainctx.clearRect(0, 0, $.W, $.H);
+			i = $.platforms.length; while(i--){  $.platforms[i].render(); }
+			i = $.effects.length; while(i--){  $.effects[i].render(); }
+			$.myPlayer.render();
 		}
+		else if($.gameStatus == 'playing')
+		{
+			$.main.style.marginLeft = '0px';
+			$.main.style.marginTop = '0px';
+		//setTimeout(function() {
+			$.myPlayer.update();
+			$.platformManager.update();
+			var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
+				i = $.effects.length; while(i--){  $.effects[i].update(i); }
+			$.mainctx.clearRect(0, 0, $.W, $.H);
+			//$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
+	
+			//$.bmainctx.clearRect(0, 0, $.W, $.H);
+			i = $.platforms.length; while(i--){  $.platforms[i].render(); }
+			i = $.effects.length; while(i--){  $.effects[i].render(); }
+			$.myPlayer.render();
+			if(!$.myPlayer.alive()){
+				$.gameStatus = 'dead';
+			}
+		}
+		else if ($.gameStatus == 'dead'){
+			 $.mainctx.clearRect(0, 0, $.W, $.H);
+			 $.deathScreen();
+			 if($.mouse.leftDown || $.keys.space){$.newGame();};
+ 			 var i = $.platforms.length; while(i--){  $.platforms[i].render(); }
+ 			//i = $.effects.length; while(i--){  $.effects[i].render(); }
+		 }
 		//},1000/$.setfps);
 
 	
 }
 
 window.addEventListener('load', function () {
+	$.gameStatus = 'title';
+ 	$.sounds = new $.sound();
     $.setup();
 	 $.loop();
 });
