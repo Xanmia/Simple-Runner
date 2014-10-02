@@ -20,9 +20,9 @@ $.player.prototype.update = function(){
 	this.checkCollision();
 	this.distance += (this.velocityX*$.dt)/60;
 	
-	if(100%Math.round((this.distance))){
-		$.sounds.updateSound(Math.round((this.distance)/100));
-	}
+	//if(100%Math.round((this.distance))){
+	//	$.sounds.updateSound(Math.round((this.distance)/100));
+	//}
     
 	if ($.mouse.leftDown) {
         this.jump();

@@ -66,6 +66,7 @@ $.setup = function() {
 }
 
 $.titleScreen = function(){
+	$.mainctx.fillStyle = 'rgba(20,133,204,1.0)';
 	$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
 	$.utils.text("COLOR RUNNER",$.mainctx ,$.W/2-400,$.H/6,12,7);
@@ -73,6 +74,7 @@ $.titleScreen = function(){
 }
 
 $.deathScreen = function(){
+	$.mainctx.fillStyle = 'rgba(255,0,0,1.0)';
 	$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
 	$.utils.text("GAME OVER",$.mainctx ,$.W/2-300,$.H/6,12,7);
@@ -182,7 +184,7 @@ $.loop = function () {
 
 window.addEventListener('load', function () {
 	$.gameStatus = 'title';
- 	$.sounds = new $.sound();
+ //	$.sounds = new $.sound();
     $.setup();
 	 $.loop();
 });
