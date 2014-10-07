@@ -57,7 +57,7 @@ $.setup = function() {
 	$.updateDelta();
 	
     $.myPlayer = new $.player();
-	$.particleSystem = new $.Emitter(new $.Vector(100,100), new $.Vector(1,1));
+	//$.particleSystem = new $.Emitter(new $.Vector(100,100), new $.Vector(1,1));
 	
 	$.platformManager = new $.platformGenerator();
     $.platforms = [];
