@@ -1,7 +1,7 @@
 ﻿
 //need death animation
-//score and gameover at death
-//start screen
+//save best score
+//slide death message from left?
 //directions
 //change to translate
 //sound 
@@ -57,6 +57,8 @@ $.setup = function() {
 	$.updateDelta();
 	
     $.myPlayer = new $.player();
+	$.particleSystem = new $.Emitter(new $.Vector(100,100), new $.Vector(1,1));
+	
 	$.platformManager = new $.platformGenerator();
     $.platforms = [];
  	$.effects = [];
@@ -66,20 +68,24 @@ $.setup = function() {
 }
 
 $.titleScreen = function(){
+	$.mainctx.save();
 	$.mainctx.fillStyle = 'rgba(20,133,204,1.0)';
 	$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
 	$.utils.text("COLOR RUNNER",$.mainctx ,$.W/2-400,$.H/6,12,7);
-	$.utils.text($.mobile ? "TAP  TO  PLAY" : "SPACE TO PLAY",$.mainctx ,$.W/2-250,$.H/2,6,7);
+	$.utils.text($.mobile ? "TAP  TO  PLAY" : "SPACE TO PLAY",$.mainctx ,$.W/2-225,$.H/2,6,7);
+	$.mainctx.restore();
 }
 
 $.deathScreen = function(){
+	$.mainctx.save();
 	$.mainctx.fillStyle = 'rgba(255,0,0,1.0)';
 	$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
 	$.utils.text("GAME OVER",$.mainctx ,$.W/2-300,$.H/6,12,7);
 	$.utils.text("SCORE " + Math.round($.myPlayer.distance),$.mainctx ,$.W/2-170,$.H/3,6,7);
-	$.utils.text($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",$.mainctx ,$.W/2-250,$.H/2,6,7);
+	$.utils.text($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",$.mainctx ,$.W/2-225,$.H/2,6,7);
+	$.mainctx.restore();
 }
 
 $.newGame = function(){
@@ -130,43 +136,35 @@ $.keyup = function(e){
 	if( e.keyCode === 32 ){ $.keys.space = 0; }
 };
 
+$.playing = function(){
+	$.main.style.marginLeft = '0px';
+	$.main.style.marginTop = '0px';
+//setTimeout(function() {
+	$.myPlayer.update();
+	$.platformManager.update();
+	var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
+		i = $.effects.length; while(i--){  $.effects[i].update(i); }
+	$.mainctx.clearRect(0, 0, $.W, $.H);
+	//$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
+
+	//$.bmainctx.clearRect(0, 0, $.W, $.H);
+	i = $.platforms.length; while(i--){  $.platforms[i].render(); }
+	i = $.effects.length; while(i--){  $.effects[i].render(); }
+	$.myPlayer.render();
+}
+
 $.loop = function () {
 		requestAnimFrame($.loop);
         $.updateDelta();
 		
 		if ($.gameStatus == 'title'){
 			if($.mouse.leftDown || $.keys.space){$.newGame();};
-			$.main.style.marginLeft = '0px';
-			$.main.style.marginTop = '0px';
-		//setTimeout(function() {
-			$.myPlayer.update();
-			$.platformManager.update();
-			var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
-				i = $.effects.length; while(i--){  $.effects[i].update(i); }
-			$.mainctx.clearRect(0, 0, $.W, $.H);
-			//$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
+			$.playing()
 			$.titleScreen();
-			//$.bmainctx.clearRect(0, 0, $.W, $.H);
-			i = $.platforms.length; while(i--){  $.platforms[i].render(); }
-			i = $.effects.length; while(i--){  $.effects[i].render(); }
-			$.myPlayer.render();
 		}
 		else if($.gameStatus == 'playing')
 		{
-			$.main.style.marginLeft = '0px';
-			$.main.style.marginTop = '0px';
-		//setTimeout(function() {
-			$.myPlayer.update();
-			$.platformManager.update();
-			var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
-				i = $.effects.length; while(i--){  $.effects[i].update(i); }
-			$.mainctx.clearRect(0, 0, $.W, $.H);
-			//$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
-	
-			//$.bmainctx.clearRect(0, 0, $.W, $.H);
-			i = $.platforms.length; while(i--){  $.platforms[i].render(); }
-			i = $.effects.length; while(i--){  $.effects[i].render(); }
-			$.myPlayer.render();
+			$.playing();
 			if(!$.myPlayer.alive()){
 				$.gameStatus = 'dead';
 			}

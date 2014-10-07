@@ -16,9 +16,27 @@ $.platform.prototype.update = function(velocityX, index){
 
 $.platform.prototype.render = function(){
     $.mainctx.fillStyle = 'rgba('+ this.color.r + ',' + this.color.g + ','+ this.color.b + ',1.0)';
+	//$.mainctx.strokeStyle = 'rgb(0,255,255)';
+	//$.mainctx.lineWidth = 10;
 	$.mainctx.shadowBlur    = 20;
-	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 1.0)';
-    $.mainctx.fillRect(this.x, this.y, this.width, this.height);
+	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
+	$.mainctx.beginPath();
+    $.mainctx.rect(this.x, this.y, this.width, this.height);
+	//$.mainctx.stroke();
+	$.mainctx.fill();
+	$.mainctx.closePath();
+	
+	/*$.mainctx.beginPath();
+	//$.mainctx.rect(this.x,this.y-15,this.width,30)
+	$.mainctx.moveTo(this.x, this.y+50);
+	$.mainctx.lineTo(this.x-50, this.y+30);
+	$.mainctx.lineTo(this.x-50+(this.width-50), this.y+30);
+	$.mainctx.lineTo(this.x+(this.width), this.y+50);
+	$.mainctx.lineTo(this.x, this.y+50);
+	$.mainctx.stroke();
+	$.mainctx.fill();
+	$.mainctx.closePath();
+	*/
 
 }
 

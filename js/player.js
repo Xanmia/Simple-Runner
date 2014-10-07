@@ -38,10 +38,15 @@ $.player.prototype.update = function(){
 }
 
 $.player.prototype.alive = function(){
-    if(this.y > $.H+(this.height*4))
+
+    if(this.y > $.H*5)
     {
   	 	return false;
     }
+	else if(this.y > $.H){
+		this.velocityX -= .25*$.dt;
+		return true;
+	}
 	else if(this.height <= 0) 
 	{
 		return false;
