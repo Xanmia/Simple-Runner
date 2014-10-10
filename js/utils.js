@@ -18,6 +18,13 @@ $.utils.RectOnTopRect = function(x1,y1,width1,height1,x2,y2,width2,height2)
 	}
 }
 
+$.utils.calcTextWidth = function(text, scale, letterSpacing){
+	return text.length * ((scale * 5)+ letterSpacing);
+}
+
+$.utils.calcTextHeight = function(text, scale, letterSpacing){
+	return (scale * 5);
+}
 
 $.utils.text = function (text, canvas, locX, locY, scale, letterSpacing) {
     var size = 5;

@@ -113,6 +113,7 @@ $.player.prototype.changeColor = function () {
 
 $.player.prototype.render = function(){
 	$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
+	
 	$.utils.text("DISTANCE " + Math.round(this.distance),$.mainctx ,this.x-(this.width+5),this.y-(this.height+30),2,1);
 	
 	$.mainctx.beginPath();

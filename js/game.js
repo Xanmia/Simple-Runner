@@ -4,6 +4,7 @@
 //slide death message from left?
 //change to translate
 //sound 
+//text width, height for centering in screen
 
 window.requestAnimFrame = (function(){
     return window.requestAnimationFrame ||
@@ -73,23 +74,33 @@ $.setup = function() {
 }
 
 $.titleScreen = function(){
+	var textSize = 100;
 	$.mainctx.save();
 	$.mainctx.fillStyle = 'rgba(20,133,204,1.0)';
 	$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
-	$.utils.text("COLOR RUNNER",$.mainctx ,$.W/2-400,$.H/6,12,7);
-	$.utils.text($.mobile ? "TAP  TO  PLAY" : "SPACE TO PLAY",$.mainctx ,$.W/2-225,$.H/2,6,7);
+	textSize = $.utils.calcTextWidth("COLOR RUNNER",12,7);
+	$.utils.text("COLOR RUNNER",$.mainctx ,$.W/2-(textSize/2),$.H/6,12,7);
+	textSize = $.utils.calcTextWidth($.mobile ? "TAP  TO  PLAY" : "SPACE TO PLAY",6,7);
+	$.utils.text($.mobile ? "TAP  TO  PLAY" : "SPACE TO PLAY",$.mainctx ,$.W/2-(textSize/2),$.H/2,6,7);
 	$.mainctx.restore();
 }
 
 $.deathScreen = function(){
+	var textSize = 100;//$.utils.calcTextWidth("SCORE " + Math.round($.myPlayer.distance),6,7);
+	var textHeight = 100;
 	$.mainctx.save();
 	$.mainctx.fillStyle = 'rgba(255,0,0,1.0)';
 	$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
-	$.utils.text("GAME OVER",$.mainctx ,$.W/2-300,$.H/6,12,7);
-	$.utils.text("SCORE " + Math.round($.myPlayer.distance),$.mainctx ,$.W/2-170,$.H/3,6,7);
-	$.utils.text($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",$.mainctx ,$.W/2-225,$.H/2,6,7);
+	textSize = $.utils.calcTextWidth("GAME OVER",12,7);
+	$.utils.text("GAME OVER",$.mainctx ,$.W/2-(textSize/2),$.H/12,12,7);
+	textHeight = $.utils.calcTextHeight("GAME OVER",12,7);
+	textSize = $.utils.calcTextWidth("SCORE " + Math.round($.myPlayer.distance),6,7);
+	$.utils.text("SCORE " + Math.round($.myPlayer.distance),$.mainctx ,$.W/2-(textSize/2),$.H/9 + textHeight ,6,7);
+	textHeight += $.utils.calcTextHeight($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",6,7);
+	textSize = $.utils.calcTextWidth($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",6,7);
+	$.utils.text($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",$.mainctx ,$.W/2-(textSize/2),$.H/8 + textHeight  ,6,7);
 	$.mainctx.restore();
 }
 
@@ -172,7 +183,7 @@ $.tutorial = function(){
 $.loop = function () {
 		requestAnimFrame($.loop);
         $.updateDelta();
-		
+
 		if ($.gameStatus == 'title'){
 			$.myPlayer.status = 'Demo';
 			if($.mouse.leftDown || $.keys.space){$.tutorial();};
@@ -193,8 +204,10 @@ $.loop = function () {
 			$.mainctx.fillRect($.W/2, 0, 10, $.H);
 			if ($.helpStatus.color === 0){
 				$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
-				$.utils.text($.mobile ? "TAP LEFT FOR NEW COLOR" : "SPACE TO CHANGE COLOR",$.mainctx ,20,$.H/6,3,2);
-				$.utils.text("TRY TO NOT LAND ON THE SAME COLOR",$.mainctx ,20 ,$.H/4,2,2);
+				var textSize = $.utils.calcTextWidth($.mobile ? "TAP LEFT FOR NEW COLOR" : "SPACE TO CHANGE COLOR",3,2);
+				$.utils.text($.mobile ? "TAP LEFT FOR NEW COLOR" : "SPACE TO CHANGE COLOR",$.mainctx ,($.W*.25)-(textSize/2),$.H/6,3,2);
+				 textSize = $.utils.calcTextWidth("TRY TO NOT LAND ON THE SAME COLOR",2,2);
+				$.utils.text("TRY TO NOT LAND ON THE SAME COLOR",$.mainctx ,(($.W/2)/2)-(textSize/2) ,$.H/4,2,2);
 				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
 				$.mainctx.fillRect(0, 0, $.W/2, $.H);
 		    
@@ -202,7 +215,8 @@ $.loop = function () {
 			
 			if ($.helpStatus.jump === 0){
 				$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
-				$.utils.text($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",$.mainctx ,($.W/2)+100,$.H/6,3,2);
+				var textSize = $.utils.calcTextWidth($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",3,2);
+				$.utils.text($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",$.mainctx ,($.W*.75)-(textSize/2),$.H/6,3,2);
 				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
 				//$.helpStatus.color = 0
 				$.mainctx.fillRect($.W/2, 0, $.W/2, $.H);
