@@ -2,9 +2,9 @@
 //need death animation
 //save best score
 //slide death message from left?
-//directions
 //change to translate
 //sound 
+
 window.requestAnimFrame = (function(){
     return window.requestAnimationFrame ||
            window.webkitRequestAnimationFrame ||
@@ -54,11 +54,16 @@ $.setup = function() {
 		space: 0
 	};
 	
+	$.helpStatus = {
+		jump: 0,
+		color: 0
+	};
+	
 	$.updateDelta();
 	
     $.myPlayer = new $.player();
-	//$.particleSystem = new $.Emitter(new $.Vector(100,100), new $.Vector(1,1));
-	
+	//$.particleSystem = new $.Emitter(new $.Vector($.W,$.H/2), new $.Vector(-6,.1));
+	//$.fields = [new $.Field($.myPlayer, -9000)];///200000 or -9000
 	$.platformManager = new $.platformGenerator();
     $.platforms = [];
  	$.effects = [];
@@ -137,6 +142,7 @@ $.keyup = function(e){
 };
 
 $.playing = function(){
+
 	$.main.style.marginLeft = '0px';
 	$.main.style.marginTop = '0px';
 //setTimeout(function() {
@@ -144,27 +150,67 @@ $.playing = function(){
 	$.platformManager.update();
 	var i = $.platforms.length; while(i--){  $.platforms[i].update($.myPlayer.velocityX,i); }
 		i = $.effects.length; while(i--){  $.effects[i].update(i); }
+	//$.particleSystem.update($.fields);
 	$.mainctx.clearRect(0, 0, $.W, $.H);
 	//$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
 
 	//$.bmainctx.clearRect(0, 0, $.W, $.H);
 	i = $.platforms.length; while(i--){  $.platforms[i].render(); }
 	i = $.effects.length; while(i--){  $.effects[i].render(); }
+	//$.particleSystem.render();
 	$.myPlayer.render();
 }
+
+$.tutorial = function(){
+
+	$.gameStatus = 'tutorial'
+	$.setup();
+
+}
+
 
 $.loop = function () {
 		requestAnimFrame($.loop);
         $.updateDelta();
 		
 		if ($.gameStatus == 'title'){
-			if($.mouse.leftDown || $.keys.space){$.newGame();};
+			$.myPlayer.status = 'Demo';
+			if($.mouse.leftDown || $.keys.space){$.tutorial();};
 			$.playing()
 			$.titleScreen();
+			
+		}
+		else if ($.gameStatus == 'tutorial'){
+			$.myPlayer.status = 'Demo';
+			if($.mouse.leftDown ){
+				$.helpStatus.jump = 1;
+			};
+			if( $.keys.space ){
+				$.helpStatus.color = 1;
+			};
+			$.playing()
+			$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
+			$.mainctx.fillRect($.W/2, 0, 10, $.H);
+			if ($.helpStatus.jump === 0){
+				$.utils.text($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",$.mainctx ,(($.W/2)/2)-250,$.H/6,5,3);
+				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
+				$.helpStatus.color = 0
+				$.mainctx.fillRect(0, 0, $.W/2, $.H);
+			}
+			if ($.helpStatus.color === 0){
+				$.utils.text($.mobile ? "TAP LEFT TO CHANGE COLOR" : "SPACE TO CHANGE COLOR",$.mainctx ,($.W/2)+100,$.H/6,5,3);
+				$.utils.text("TRY TO NOT LAND ON THE SAME COLOR",$.mainctx ,($.W/2)+100 ,$.H/4,3,3);
+				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
+		    	$.mainctx.fillRect($.W/2, 0, $.W/2, $.H);
+			}
+			if ($.helpStatus.jump && $.helpStatus.color) {
+				$.newGame();
+			}
 		}
 		else if($.gameStatus == 'playing')
 		{
 			$.playing();
+			
 			if(!$.myPlayer.alive()){
 				$.gameStatus = 'dead';
 			}
@@ -181,9 +227,13 @@ $.loop = function () {
 	
 }
 
-window.addEventListener('load', function () {
+$.load = function(){
 	$.gameStatus = 'title';
  //	$.sounds = new $.sound();
     $.setup();
-	 $.loop();
+    $.loop();
+}
+
+window.addEventListener('load', function () {
+	$.load();
 });

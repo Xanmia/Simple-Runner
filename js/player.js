@@ -6,16 +6,22 @@
     this.oWidth = this.width;
     this.oHeight = this.height;
     this.velocityY = -10;
-    this.velocityX = 20;
+    this.velocityX = 0; //20
+	this.maxVelocityX = 20;
     this.maxJumpHeight = 15;
     this.weight = 1;
     this.jumps = 0;
     this.maxJumps = 1;
 	this.color=$.colors[Math.floor(Math.random()*3)];
 	this.distance = 0;
+	this.status = '';
 }
 
 $.player.prototype.update = function(){
+	if (this.status != 'Demo') {
+		this.accelerate();}
+		else
+		{this.velocityX = 0;}
 	this.velocityY = (this.velocityY - (this.weight*$.dt));
 	this.checkCollision();
 	this.distance += (this.velocityX*$.dt)/60;
@@ -71,14 +77,22 @@ $.player.prototype.checkCollision = function(){
 	}
 }
 
+$.player.prototype.accelerate = function() {
+	if(this.maxVelocityX > this.velocityX){
+		this.velocityX += .1;
+	} 
+}
+
 $.player.prototype.death = function() {
 	
 }
 
 $.player.prototype.takeDamage = function() {
-	this.height -= .2*$.dt;
-	$.main.style.marginLeft = Math.random()*5 + 'px';
-	$.main.style.marginTop = Math.random()*5 + 'px';
+	if (this.status != 'Demo') {
+		this.height -= .2*$.dt;
+		$.main.style.marginLeft = Math.random()*5 + 'px';
+		$.main.style.marginTop = Math.random()*5 + 'px';
+	}
 }
 
 $.player.prototype.jump = function () {

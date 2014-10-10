@@ -53,26 +53,26 @@ $.Particle.prototype.move = function () {
 
 
 $.Particle.prototype.draw = function () {
-    $.mainctx.fillStyle = "rgba(0,0,255,  "+ 1.0 * (.9-(this.lifeTick/this.life)) + ")";
+    $.mainctx.fillStyle = "rgba(255,0,0,  "+ 1.0 * (.9-(this.lifeTick/this.life)) + ")";
     $.mainctx.fillRect(this.position.x, this.position.y, this.size, this.size);
 };
 
 
 $.Emitter = function (point, velocity, spread) {
     this.particles = [];
-    this.maxParticles = 500;
-    this.emitRate = 10;
+    this.maxParticles = 1500;
+    this.emitRate = 5;
     this.position = point; 
     this.velocity = velocity; 
-    this.spread = spread || (Math.PI / 12);
-    this.particleLifeMax = 100;
+    this.spread = spread || (Math.PI / 24);
+    this.particleLifeMax = 1000;
     this.particleLifeMin = 10;
-    this.particleSizeMax = 5;
+    this.particleSizeMax = 7;
     this.particleSizeMin = 1;
     this.boundsX = $.W;
     this.boundsY = $.H;
-    this.particleType = new function(){ $.mainctx.fillStyle = "rgba(0,0,255,  "+ 1.0 * (.9-(this.lifeTick/this.life)) + ")";
-                                $.mainctx.fillRect(this.position.x, this.position.y, this.size, this.size); };
+   // this.particleType = new function(){ $.mainctx.fillStyle = "rgba(0,0,255,  "+ 1.0 * (.9-(this.lifeTick/this.life)) + ")";
+     ///                           $.mainctx.fillRect(this.position.x, this.position.y, this.size, this.size); };
     //this.canvas = canvas;
   //  this.drawColor = "#999"; 
 }
@@ -112,10 +112,9 @@ $.Emitter.prototype.update = function (fields) {
     this.particles = currentParticles;
 }
 
-$.Emitter.prototype.draw = function () {
+$.Emitter.prototype.render = function () {
     this.drawParticles();
 }
-
 
 $.Field = function(point, mass) {
     this.position = point;
