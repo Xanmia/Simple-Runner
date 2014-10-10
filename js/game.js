@@ -191,18 +191,23 @@ $.loop = function () {
 			$.playing()
 			$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
 			$.mainctx.fillRect($.W/2, 0, 10, $.H);
-			if ($.helpStatus.jump === 0){
-				$.utils.text($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",$.mainctx ,(($.W/2)/2)-250,$.H/6,5,3);
-				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
-				$.helpStatus.color = 0
-				$.mainctx.fillRect(0, 0, $.W/2, $.H);
-			}
 			if ($.helpStatus.color === 0){
-				$.utils.text($.mobile ? "TAP LEFT TO CHANGE COLOR" : "SPACE TO CHANGE COLOR",$.mainctx ,($.W/2)+100,$.H/6,5,3);
-				$.utils.text("TRY TO NOT LAND ON THE SAME COLOR",$.mainctx ,($.W/2)+100 ,$.H/4,3,3);
+				$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
+				$.utils.text($.mobile ? "TAP LEFT TO CHANGE COLOR" : "SPACE TO CHANGE COLOR",$.mainctx ,20,$.H/6,5,3);
+				$.utils.text("TRY TO NOT LAND ON THE SAME COLOR",$.mainctx ,20 ,$.H/4,3,3);
 				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
-		    	$.mainctx.fillRect($.W/2, 0, $.W/2, $.H);
+				$.mainctx.fillRect(0, 0, $.W/2, $.H);
+		    
+			}	
+			
+			if ($.helpStatus.jump === 0){
+				$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
+				$.utils.text($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",$.mainctx ,($.W/2)+100,$.H/6,5,3);
+				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
+				//$.helpStatus.color = 0
+				$.mainctx.fillRect($.W/2, 0, $.W/2, $.H);
 			}
+	
 			if ($.helpStatus.jump && $.helpStatus.color) {
 				$.newGame();
 			}
