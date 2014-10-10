@@ -193,8 +193,8 @@ $.loop = function () {
 			$.mainctx.fillRect($.W/2, 0, 10, $.H);
 			if ($.helpStatus.color === 0){
 				$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
-				$.utils.text($.mobile ? "TAP LEFT TO CHANGE COLOR" : "SPACE TO CHANGE COLOR",$.mainctx ,20,$.H/6,5,3);
-				$.utils.text("TRY TO NOT LAND ON THE SAME COLOR",$.mainctx ,20 ,$.H/4,3,3);
+				$.utils.text($.mobile ? "TAP LEFT FOR NEW COLOR" : "SPACE TO CHANGE COLOR",$.mainctx ,20,$.H/6,3,2);
+				$.utils.text("TRY TO NOT LAND ON THE SAME COLOR",$.mainctx ,20 ,$.H/4,2,2);
 				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
 				$.mainctx.fillRect(0, 0, $.W/2, $.H);
 		    
@@ -202,7 +202,7 @@ $.loop = function () {
 			
 			if ($.helpStatus.jump === 0){
 				$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
-				$.utils.text($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",$.mainctx ,($.W/2)+100,$.H/6,5,3);
+				$.utils.text($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",$.mainctx ,($.W/2)+100,$.H/6,3,2);
 				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
 				//$.helpStatus.color = 0
 				$.mainctx.fillRect($.W/2, 0, $.W/2, $.H);
