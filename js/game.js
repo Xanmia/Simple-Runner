@@ -1,12 +1,4 @@
-﻿
-//need death animation
-//save best score
-//slide death message from left?
-//change to translate
-//sound 
-//text width, height for centering in screen
-
-window.requestAnimFrame = (function(){
+﻿window.requestAnimFrame = (function(){
     return window.requestAnimationFrame ||
            window.webkitRequestAnimationFrame ||
            window.mozRequestAnimationFrame ||
@@ -18,14 +10,14 @@ window.requestAnimFrame = (function(){
 
 $.setup = function() {
     $.main = document.getElementById('main');
-	$.bmain = document.getElementById('bmain');
+	//$.bmain = document.getElementById('bmain');
 	$.bg1 = document.getElementById('bg1');
     $.mainctx = $.main.getContext('2d');
-	$.bmainctx = $.bmain.getContext('2d');
+	//$.bmainctx = $.bmain.getContext('2d');
     $.main.width = window.innerWidth;
     $.main.height = window.innerHeight;
-    $.bmain.width = window.innerWidth;
-    $.bmain.height = window.innerHeight;
+    //$.bmain.width = window.innerWidth;
+    //$.bmain.height = window.innerHeight;
     $.bg1.width = window.innerWidth;
     $.bg1.height = window.innerHeight;
     $.W = window.innerWidth;
@@ -37,6 +29,9 @@ $.setup = function() {
 	var android = ua.indexOf('android') >= 0;
 	var ffos = ua.indexOf('firefox') >= 0 && ua.indexOf('mobile') >= 0;
 	$.mobile = ios || android || ffos;
+	
+    //$.imageObj = new Image();
+    //$.imageObj.src = 'clouds.png';
 
 
 	window.addEventListener('touchstart',$.touchstart);
@@ -75,21 +70,29 @@ $.setup = function() {
 
 $.titleScreen = function(){
 	var textSize = 100;
-	$.mainctx.save();
+	var textHeight = 100;
+	//$.mainctx.save();
+	$.mainctx.beginPath();
 	$.mainctx.fillStyle = 'rgba(20,133,204,1.0)';
-	$.mainctx.shadowBlur    = 20;
+	//$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
 	textSize = $.utils.calcTextWidth("COLOR RUNNER",12,7);
+	textHeight = $.utils.calcTextHeight("COLOR RUNNER",12,7);
 	$.utils.text("COLOR RUNNER",$.mainctx ,$.W/2-(textSize/2),$.H/6,12,7);
+	textSize = $.utils.calcTextWidth("BEST: " + $.gameSave.data.best,7,4);
+	$.utils.text("BEST: "+ $.gameSave.data.best,$.mainctx ,$.W/2-(textSize/2),$.H/6+(textHeight+50),7,4);
 	textSize = $.utils.calcTextWidth($.mobile ? "TAP  TO  PLAY" : "SPACE TO PLAY",6,7);
 	$.utils.text($.mobile ? "TAP  TO  PLAY" : "SPACE TO PLAY",$.mainctx ,$.W/2-(textSize/2),$.H/2,6,7);
-	$.mainctx.restore();
+	$.mainctx.fill();
+	$.mainctx.closePath();
+	//$.mainctx.restore();
 }
 
 $.deathScreen = function(){
 	var textSize = 100;//$.utils.calcTextWidth("SCORE " + Math.round($.myPlayer.distance),6,7);
 	var textHeight = 100;
 	$.mainctx.save();
+	$.mainctx.beginPath();
 	$.mainctx.fillStyle = 'rgba(255,0,0,1.0)';
 	$.mainctx.shadowBlur    = 20;
 	$.mainctx.shadowColor   = 'rgba(0, 0, 0, 0.0)';
@@ -98,10 +101,18 @@ $.deathScreen = function(){
 	textHeight = $.utils.calcTextHeight("GAME OVER",12,7);
 	textSize = $.utils.calcTextWidth("SCORE " + Math.round($.myPlayer.distance),6,7);
 	$.utils.text("SCORE " + Math.round($.myPlayer.distance),$.mainctx ,$.W/2-(textSize/2),$.H/9 + textHeight ,6,7);
-	textHeight += $.utils.calcTextHeight($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",6,7);
+	
+	textSize = $.utils.calcTextWidth("BEST: " + $.gameSave.data.best,6,7);
+	textHeight += $.utils.calcTextHeight("BEST",6,7)+25;
+	$.utils.text("BEST: "+ $.gameSave.data.best,$.mainctx ,$.W/2-(textSize/2),$.H/9+(textHeight),6,7);
+	
+	textHeight += $.utils.calcTextHeight($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",6,7)+25;
 	textSize = $.utils.calcTextWidth($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",6,7);
-	$.utils.text($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",$.mainctx ,$.W/2-(textSize/2),$.H/8 + textHeight  ,6,7);
+	$.utils.text($.mobile ? "TAP  TO  PLAY" :"SPACE TO PLAY",$.mainctx ,$.W/2-(textSize/2),$.H/9 + textHeight  ,6,7);
+	$.mainctx.fill();
+	$.mainctx.closePath();
 	$.mainctx.restore();
+	$.gameSave.save(Math.round($.myPlayer.distance));
 }
 
 $.newGame = function(){
@@ -164,12 +175,13 @@ $.playing = function(){
 	//$.particleSystem.update($.fields);
 	$.mainctx.clearRect(0, 0, $.W, $.H);
 	//$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
-
+	//$.mainctx.drawImage($.imageObj, 0, 0, $.W, $.H);
 	//$.bmainctx.clearRect(0, 0, $.W, $.H);
 	i = $.platforms.length; while(i--){  $.platforms[i].render(); }
 	i = $.effects.length; while(i--){  $.effects[i].render(); }
 	//$.particleSystem.render();
 	$.myPlayer.render();
+	
 }
 
 $.tutorial = function(){
@@ -185,10 +197,14 @@ $.loop = function () {
         $.updateDelta();
 
 		if ($.gameStatus == 'title'){
+			
 			$.myPlayer.status = 'Demo';
 			if($.mouse.leftDown || $.keys.space){$.tutorial();};
 			$.playing()
+	
+			
 			$.titleScreen();
+		    
 			
 		}
 		else if ($.gameStatus == 'tutorial'){
@@ -203,23 +219,29 @@ $.loop = function () {
 			$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
 			$.mainctx.fillRect($.W/2, 0, 10, $.H);
 			if ($.helpStatus.color === 0){
+				$.mainctx.beginPath();
 				$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
 				var textSize = $.utils.calcTextWidth($.mobile ? "TAP LEFT FOR NEW COLOR" : "SPACE TO CHANGE COLOR",3,2);
 				$.utils.text($.mobile ? "TAP LEFT FOR NEW COLOR" : "SPACE TO CHANGE COLOR",$.mainctx ,($.W*.25)-(textSize/2),$.H/6,3,2);
 				 textSize = $.utils.calcTextWidth("TRY TO NOT LAND ON THE SAME COLOR",2,2);
 				$.utils.text("TRY TO NOT LAND ON THE SAME COLOR",$.mainctx ,(($.W/2)/2)-(textSize/2) ,$.H/4,2,2);
+		    	$.mainctx.fill();
+				$.mainctx.closePath();
 				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
 				$.mainctx.fillRect(0, 0, $.W/2, $.H);
-		    
+
 			}	
 			
 			if ($.helpStatus.jump === 0){
+				$.mainctx.beginPath();
 				$.mainctx.fillStyle = 'rgba(255,255,0,1.0)';
 				var textSize = $.utils.calcTextWidth($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",3,2);
 				$.utils.text($.mobile ? "TAP RIGHT TO JUMP" : "CLICK TO JUMP",$.mainctx ,($.W*.75)-(textSize/2),$.H/6,3,2);
+				$.mainctx.fill();
+				$.mainctx.closePath();
 				$.mainctx.fillStyle = 'rgba(255,255,255,0.3)';
-				//$.helpStatus.color = 0
 				$.mainctx.fillRect($.W/2, 0, $.W/2, $.H);
+
 			}
 	
 			if ($.helpStatus.jump && $.helpStatus.color) {
@@ -248,6 +270,8 @@ $.loop = function () {
 
 $.load = function(){
 	$.gameStatus = 'title';
+	$.gameSave = new $.gameLoad();
+	//console.log($.gameSave.data.best);
  //	$.sounds = new $.sound();
     $.setup();
     $.loop();

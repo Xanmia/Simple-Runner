@@ -33,7 +33,7 @@ $.utils.text = function (text, canvas, locX, locY, scale, letterSpacing) {
         for (var y = 0; y < size; y++) {
             for (var x = 0; x < size; x++) {
                 if (curLetter[y][x] === 1) {
-                    canvas.fillRect((locX+(x * scale) + ((size * scale) + letterSpacing) * i),(locY + (y * scale)), scale, scale);
+                    canvas.rect((locX+(x * scale) + ((size * scale) + letterSpacing) * i),(locY + (y * scale)), scale, scale);
                 }
             }
         }

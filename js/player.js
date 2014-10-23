@@ -15,6 +15,7 @@
 	this.color=$.colors[Math.floor(Math.random()*3)];
 	this.distance = 0;
 	this.status = '';
+	this.hitDetection = true;
 }
 
 $.player.prototype.update = function(){
@@ -23,7 +24,7 @@ $.player.prototype.update = function(){
 		else
 		{this.velocityX = 0;}
 	this.velocityY = (this.velocityY - (this.weight*$.dt));
-	this.checkCollision();
+	if (this.hitDetection) {this.checkCollision();}
 	this.distance += (this.velocityX*$.dt)/60;
 	
 	//if(100%Math.round((this.distance))){
@@ -50,13 +51,17 @@ $.player.prototype.alive = function(){
   	 	return false;
     }
 	else if(this.y > $.H){
-		this.velocityX -= .25*$.dt;
+		if(this.velocityX>0)
+		{
+			this.velocityX -= .25*$.dt;
+		}
+
 		return true;
 	}
-	else if(this.height <= 0) 
-	{
-		return false;
-	}
+	//else if(this.height <= 0 ) 
+	//{
+	//	return false;
+	//}
 	return true;
 }
 
@@ -65,6 +70,7 @@ $.player.prototype.checkCollision = function(){
 		if($.utils.RectOnTopRect( this.x+this.oWidth, (this.y)+Math.max(0,((this.velocityY*$.dt)*-1)),this.oWidth,Math.max(this.oHeight,(this.velocityY*$.dt)*-1),$.platforms[i].x,$.platforms[i].y,$.platforms[i].width,$.platforms[i].height  )){
 	
 			if(this.velocityY<=0){//on a platform
+				if(this.jumps>0){	$.main.style.marginTop = 4 + 'px';};
 			    this.jumps = 0;
 			    this.velocityY = 0;
 				this.y = $.platforms[i].y; //- (this.height);
@@ -89,9 +95,17 @@ $.player.prototype.death = function() {
 
 $.player.prototype.takeDamage = function() {
 	if (this.status != 'Demo') {
-		this.height -= .2*$.dt;
-		$.main.style.marginLeft = Math.random()*5 + 'px';
-		$.main.style.marginTop = Math.random()*5 + 'px';
+		if(this.height>0)
+		{
+			this.height -= .2*$.dt;
+			$.main.style.marginLeft = Math.random()*5 + 'px';
+			$.main.style.marginTop = Math.random()*5 + 'px';
+		}
+		else
+		{
+			this.height = 0;
+			this.hitDetection = false;
+		}
 	}
 }
 
@@ -112,10 +126,15 @@ $.player.prototype.changeColor = function () {
 }
 
 $.player.prototype.render = function(){
-	$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
-	
+	//$.mainctx.save();
+	$.mainctx.beginPath();
 	$.utils.text("DISTANCE " + Math.round(this.distance),$.mainctx ,this.x-(this.width+5),this.y-(this.height+30),2,1);
+	$.mainctx.fillStyle = 'rgba(255,255,255,1.0)';
+	$.mainctx.fill();
+	$.mainctx.closePath();
+	//$.mainctx.restore();
 	
+	//$.mainctx.save();
 	$.mainctx.beginPath();
     $.mainctx.fillStyle = 'rgba('+this.color.r+','+ this.color.g +','+ this.color.b +',1.0)';
 	$.mainctx.shadowBlur    = 20;
@@ -125,4 +144,6 @@ $.player.prototype.render = function(){
 	$.mainctx.rect(this.x, this.y, this.width, -this.height);
 	$.mainctx.stroke();
 	$.mainctx.fill();
+	$.mainctx.closePath();
+	//$.mainctx.restore();
 }

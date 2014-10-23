@@ -42,10 +42,13 @@ $.platform.prototype.render = function(){
 
 $.platformGenerator = function () {
     this.maxDrawDistance = $.W*2;
-    this.initialDistance = 200;
+    this.initialDistance = 300;
 }
 
 $.platformGenerator.prototype.update = function () {
+	//if($.myPlayer.distance>100){
+	//	this.initialDistance = 500;
+	//}
     var lastPlatform = $.platforms[$.platforms.length-1]
     if (lastPlatform.x + lastPlatform.width < this.maxDrawDistance) {
 		//$.platforms.push(new $.platform((lastPlatform.x + this.initialDistance)*2, $.H - 40, 225, 200, $.bmainctx));

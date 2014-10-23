@@ -2,9 +2,9 @@
      $.gameLoad = function (){
 		this.data = {};
 		this.data.best = 0;
- 	 	var opt = JSON.parse( localStorage.getItem( 'progress' ) );
+ 	 	var opt = JSON.parse( localStorage.getItem( 'Runnerprogress' ) );
  		if (opt == null){
- 			localStorage.setItem( 'progress', JSON.stringify(this.data) );
+ 			localStorage.setItem( 'Runnerprogress', JSON.stringify(this.data) );
  		}
 		else
 		{
@@ -17,5 +17,5 @@
 		if (this.data.best < score){
 			this.data.best = score;
 		}
-		localStorage.setItem( 'progress', JSON.stringify(this.data) );
+		localStorage.setItem( 'Runnerprogress', JSON.stringify(this.data) );
 	 };
